@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 import static com.noodlesandwich.trycatch.TryCatch.tryDoing;
@@ -57,6 +58,13 @@ public final class TryCatchTest {
         tryDoing(() -> { throw new AnotherException(); })
                 .catching(WeirdAndWonderfulException.class, (e) -> { System.err.println(e.getMessage()); })
                 .run();
+    }
+
+    @Test public void
+    sometimes_just_fuck_it() throws Throwable {
+        tryDoing(() -> { throw new WeirdAndWonderfulException("Something exploded."); })
+                .fuckIt();
+        assertThat(error(), containsString("Something exploded."));
     }
 
     private String output() {

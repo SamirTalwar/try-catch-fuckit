@@ -24,6 +24,11 @@ public final class TryCatch {
         return new TryCatch(action, newExceptionHandlers);
     }
 
+    public void fuckIt() throws Throwable {
+        catching(Throwable.class, (e) -> { e.printStackTrace(); })
+                .run();
+    }
+
     public void run() throws Throwable {
         try {
             action.run();

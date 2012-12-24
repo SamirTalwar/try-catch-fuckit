@@ -52,6 +52,13 @@ public final class TryCatchTest {
         assertThat(error(), is("It broke."));
     }
 
+    @Test(expected=AnotherException.class) public void
+    throws_any_uncaught_exceptions() throws Throwable {
+        tryDoing(() -> { throw new AnotherException(); })
+                .catching(WeirdAndWonderfulException.class, (e) -> { System.err.println(e.getMessage()); })
+                .run();
+    }
+
     private String output() {
         return out.toString().replaceFirst("\n$", "");
     }
@@ -65,4 +72,6 @@ public final class TryCatchTest {
             super(message);
         }
     }
+
+    private static class AnotherException extends Exception { }
 }

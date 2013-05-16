@@ -18,14 +18,14 @@ public final class TryCatch {
         return new TryCatch(action, Collections.<TypedExceptionHandler>emptyList());
     }
 
-    public <E extends Throwable> TryCatch catching(Class<E> exceptionType, ExceptionHandler<E> exceptionHandler) {
+    public <E extends Throwable> TryCatch catching(Class<E> exceptionType, ExceptionHandler exceptionHandler) {
         List<TypedExceptionHandler> newExceptionHandlers = new ArrayList<>(exceptionHandlers);
         newExceptionHandlers.add(new TypedExceptionHandler(exceptionType, exceptionHandler));
         return new TryCatch(action, newExceptionHandlers);
     }
 
     public void fuckIt() throws Throwable {
-        catching(Throwable.class, (e) -> { e.printStackTrace(); })
+        catching(Throwable.class, Throwable::printStackTrace)
                 .run();
     }
 
@@ -45,15 +45,15 @@ public final class TryCatch {
         void run() throws Throwable;
     }
 
-    public static interface ExceptionHandler<E extends Throwable> {
+    public static interface ExceptionHandler {
         void handle(Throwable exception) throws Throwable;
     }
 
     public static final class TypedExceptionHandler {
-        private final Class<?> type;
-        private final ExceptionHandler<?> handler;
+        private final Class<? extends Throwable> type;
+        private final ExceptionHandler handler;
 
-        public <E extends Throwable> TypedExceptionHandler(Class<E> exceptionType, ExceptionHandler<E> exceptionHandler) {
+        public <E extends Throwable> TypedExceptionHandler(Class<E> exceptionType, ExceptionHandler exceptionHandler) {
             this.type = exceptionType;
             this.handler = exceptionHandler;
         }

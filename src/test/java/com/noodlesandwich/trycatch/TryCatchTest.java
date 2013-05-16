@@ -40,7 +40,7 @@ public final class TryCatchTest {
 
     @Test public void
     tries_the_thing() throws Throwable {
-        tryDoing(() -> { System.out.println("Hello!"); })
+        tryDoing(() -> System.out.println("Hello!"))
             .run();
         assertThat(output(), is("Hello!"));
     }
@@ -48,7 +48,7 @@ public final class TryCatchTest {
     @Test public void
     catches_an_exception() throws Throwable {
         tryDoing(() -> { throw new WeirdAndWonderfulException("It broke."); })
-                .catching(WeirdAndWonderfulException.class, (e) -> { System.err.println(e.getMessage()); })
+                .catching(WeirdAndWonderfulException.class, (e) -> System.err.println(e.getMessage()))
                 .run();
         assertThat(error(), is("It broke."));
     }
@@ -56,7 +56,7 @@ public final class TryCatchTest {
     @Test(expected=AnotherException.class) public void
     throws_any_uncaught_exceptions() throws Throwable {
         tryDoing(() -> { throw new AnotherException(); })
-                .catching(WeirdAndWonderfulException.class, (e) -> { System.err.println(e.getMessage()); })
+                .catching(WeirdAndWonderfulException.class, (e) -> System.err.println(e.getMessage()))
                 .run();
     }
 
